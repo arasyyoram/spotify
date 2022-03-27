@@ -92,14 +92,18 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .card {
   width: 220px;
+  height: 342px;
   border: 1px solid #ccc;
   border-radius: 4px;
   padding: 10px;
-  margin: 30px;
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 .card:hover {
@@ -136,6 +140,7 @@
   color: #000;
   cursor: pointer;
   transition: 0.3s;
+  margin-top: auto;
 }
 
 .card-btn:hover {
