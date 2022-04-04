@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import TrackComponent from "../track";
+import PlaylistComponent from "../playlist";
+
 export default function SearchComponent() {
   // state = { accessToken: "", query: "", tracks: [] };
   const [accessToken, setAccessToken] = useState("");
   const [query, setQuery] = useState("");
   const [tracks, setTracks] = useState([]);
+  const [selectedTrack, setSelectedTrack] = useState([]);
 
   const getQueryParams = () => {
     const hash = window.location.hash.substring(1);
@@ -77,18 +80,19 @@ export default function SearchComponent() {
       // return setTracks(tempTrack);
       setTracks((oldTrack) => {
         let newTrack = [];
-        const selectedTrack = oldTrack.filter((track) => {
+        const tempselectedTrack = oldTrack.filter((track) => {
           // console.log(track);
           return track.isHeld;
         });
         // console.log(selectedTrack);
-        newTrack = [...selectedTrack, ...tempTrack];
+        newTrack = [...tempselectedTrack, ...tempTrack];
         return newTrack;
       });
     }
 
     // setTracks(tracks.albums.items);
     // console.log(tempTrack[0].isHeld);
+    console.log(selectedTrack); //deleted this
   };
 
   const queryInput = (event) => {
@@ -104,8 +108,29 @@ export default function SearchComponent() {
         return track.uri === id ? { ...track, isHeld: !track.isHeld } : track;
       })
     );
+    tracks.forEach((track) => {
+      if (track.uri === id) {
+        // masih duplicate ketika setstate di dlm setstate
+        setSelectedTrack((oldselectedTrack) => {
+          const newTrack = [...oldselectedTrack, track.uri];
+          return newTrack;
+        });
+      }
+    });
+    // setSelect();
   };
 
+  // const setSelect = () => {
+  //   setSelectedTrack((oldselectedTrack) => {
+  //     const tempselectedTrack = tracks.filter((track) => {
+  //       return track.isHeld;
+  //     });
+  //     console.log(tempselectedTrack);
+  //     const newTrack = [...oldselectedTrack, ...tempselectedTrack];
+  //     return newTrack;
+  //   });
+  // };
+  // console.log(selectedTrack);
   return (
     <>
       <div className="playlist-container">
@@ -130,6 +155,10 @@ export default function SearchComponent() {
         className="img"
       /> */}
       </div>
+      <PlaylistComponent
+        accessToken={accessToken}
+        selectedTrack={selectedTrack}
+      />
       <div className="card-container">
         {tracks.length > 0 &&
           tracks.map((e) => {

@@ -167,6 +167,29 @@
   border: 1px solid #000;
 }
 
+/* playlist input */
+
+.title-container,
+.description-container {
+  display: flex;
+  flex-direction: column;
+}
+
+#title,
+#description {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: sans-serif;
+  margin-bottom: 15px;
+}
+
+.desc-label,
+.title-label {
+  margin-bottom: 5px;
+}
+
 @media (max-width: 600px) {
   .playlist-container {
     width: 90%;
