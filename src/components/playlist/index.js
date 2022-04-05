@@ -11,17 +11,18 @@ export default function PlaylistComponent({ accessToken, selectedTrack }) {
     setForm({ ...form, [name]: value });
   };
 
-  useEffect(() => {
-    if (userID !== "") {
-      createPlaylist();
-      addPlaylist();
-    }
-  }, [userID]);
+  // useEffect(() => {
+  //   if (userID !== "") {
+  //     createPlaylist();
+  //     // addPlaylist();
+  //   }
+  // }, [userID]);
 
   const formSubmit = (event) => {
     event.preventDefault();
     console.log("send data...");
     const getUserProfile = async () => {
+      let userIDlocal = "";
       await fetch(`https://api.spotify.com/v1/me`, {
         method: "GET",
         headers: {
@@ -31,19 +32,25 @@ export default function PlaylistComponent({ accessToken, selectedTrack }) {
         },
       })
         .then((response) => response.json())
-        .then((data) => setUserID(data.id));
+        .then((data) => {
+          setUserID(data.id);
+          userIDlocal = data.id;
+        });
+      createPlaylist(userIDlocal);
     };
     getUserProfile();
   };
 
-  const createPlaylist = async () => {
+  const createPlaylist = async (userIDlocal) => {
     let dataPlaylist = {
       name: form.title,
       description: form.description,
       public: false,
       collaborative: false,
     };
-    await fetch(`https://api.spotify.com/v1/users/${userID}/playlists`, {
+    let playlistIDlocal = "";
+    console.log(userIDlocal, "<<<< userID");
+    await fetch(`https://api.spotify.com/v1/users/${userIDlocal}/playlists`, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -53,29 +60,38 @@ export default function PlaylistComponent({ accessToken, selectedTrack }) {
       body: JSON.stringify(dataPlaylist),
     })
       .then((response) => response.json())
-      .then((data) => setPlaylistID(data.id));
+      .then((data) => {
+        setPlaylistID(data.id);
+        playlistIDlocal = data.id;
+      });
+    addPlaylist(playlistIDlocal);
   };
 
-  const addPlaylist = async () => {
+  const addPlaylist = async (playlistIDlocal) => {
     console.log(selectedTrack);
     // let tempdataplaylist = selectedTrack.join;
     let dataitemPlaylist = {
       uris: selectedTrack,
       position: 0,
     };
-    await fetch(`https://api.spotify.com/v1/playlists/${playlistID}/tracks`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + accessToken,
-      },
-      body: JSON.stringify(dataitemPlaylist),
-    })
+    console.log(playlistIDlocal, "<<<< playlistID");
+    console.log(JSON.stringify(dataitemPlaylist));
+    await fetch(
+      `https://api.spotify.com/v1/playlists/${playlistIDlocal}/tracks`,
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + accessToken,
+        },
+        body: JSON.stringify(dataitemPlaylist),
+      }
+    )
       .then((response) => response.json())
       .then((data) => console.log(data));
   };
-  console.log(playlistID);
+  // console.log(playlistID);
   return (
     <>
       <h1 className="playlist-title">Create Playlist</h1>

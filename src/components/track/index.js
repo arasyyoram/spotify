@@ -13,7 +13,7 @@ export default function TrackComponent({
   return (
     <div className="card">
       <div className="card-img">
-        <img src={album[0].url} alt={songName} />
+        <img src={album.images[0].url} alt={songName} />
       </div>
       <h3 className="card-title">{songName}</h3>
       <p className="card-artist">{artists[0].name}</p>

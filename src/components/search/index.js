@@ -60,7 +60,8 @@ export default function SearchComponent() {
       }
     ).then((response) => response.json());
     const tempTrack = [];
-    trackslist.albums.items.forEach((e) => {
+    console.log(trackslist);
+    trackslist.tracks.items.forEach((e) => {
       const tempObj = { ...e, isHeld: false };
       tempTrack.push(tempObj);
     });
@@ -167,7 +168,7 @@ export default function SearchComponent() {
                 key={e.id}
                 songName={e.name}
                 artists={e.artists}
-                album={e.images}
+                album={e.album}
                 isHeld={e.isHeld}
                 getSelect={() => getSelect(e.uri)}
               />
