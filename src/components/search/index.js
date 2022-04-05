@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import TrackComponent from "../track";
 import PlaylistComponent from "../playlist";
+import { useSelector, useDispatch } from "react-redux";
+import { getAccessToken } from "./actions";
 
 export default function SearchComponent() {
   // state = { accessToken: "", query: "", tracks: [] };
@@ -8,6 +10,9 @@ export default function SearchComponent() {
   const [query, setQuery] = useState("");
   const [tracks, setTracks] = useState([]);
   const [selectedTrack, setSelectedTrack] = useState([]);
+
+  const dispatch = useDispatch();
+  const currentAccessToken = useSelector((state) => state.accessToken);
 
   const getQueryParams = () => {
     const hash = window.location.hash.substring(1);
@@ -18,6 +23,7 @@ export default function SearchComponent() {
     });
     // console.log(params.access_token);
     setAccessToken(params.access_token);
+    dispatch(getAccessToken(params.access_token));
     return params.access_token;
   };
 
@@ -55,7 +61,7 @@ export default function SearchComponent() {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
-          Authorization: "Bearer " + accessToken,
+          Authorization: "Bearer " + currentAccessToken,
         },
       }
     ).then((response) => response.json());
