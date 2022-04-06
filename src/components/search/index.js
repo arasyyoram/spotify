@@ -110,34 +110,41 @@ export default function SearchComponent() {
 
   const getSelect = (id) => {
     console.log(id);
-    setTracks((oldTrack) =>
-      oldTrack.map((track) => {
-        return track.uri === id ? { ...track, isHeld: !track.isHeld } : track;
-      })
-    );
-    tracks.forEach((track) => {
-      if (track.uri === id) {
-        // masih duplicate ketika setstate di dlm setstate
-        setSelectedTrack((oldselectedTrack) => {
-          const newTrack = [...oldselectedTrack, track.uri];
-          return newTrack;
-        });
-      }
-    });
-    // setSelect();
-  };
+    // setTracks((oldTrack) =>
+    //   oldTrack.map((track) => {
+    //     if (track.uri === id)
+    //       selectedTrackTemp.push({ ...track, isHeld: !track.isHeld });
+    //     return track.uri === id ? { ...track, isHeld: !track.isHeld } : track;
+    //   })
+    // ); yg work
 
-  // const setSelect = () => {
-  //   setSelectedTrack((oldselectedTrack) => {
-  //     const tempselectedTrack = tracks.filter((track) => {
-  //       return track.isHeld;
-  //     });
-  //     console.log(tempselectedTrack);
-  //     const newTrack = [...oldselectedTrack, ...tempselectedTrack];
-  //     return newTrack;
-  //   });
-  // };
-  // console.log(selectedTrack);
+    setTracks((oldTrack) => {
+      const selectedTrackTemp = oldTrack.map((track) => {
+        return track.uri === id ? { ...track, isHeld: !track.isHeld } : track;
+      });
+      return selectedTrackTemp;
+    });
+
+    setSelectedTrack((oldselectedTrack) => {
+      if (oldselectedTrack.indexOf(id) > -1) {
+        oldselectedTrack.splice(oldselectedTrack.indexOf(id), 1);
+        return oldselectedTrack;
+      }
+      return [...oldselectedTrack, id];
+    });
+
+    // tracks.forEach((track) => {
+    //   if (track.uri === id) {
+    //     // masih duplicate ketika setstate di dlm setstate
+    //     setSelectedTrack((oldselectedTrack) => {
+    //       const newTrack = [...oldselectedTrack, track.uri];
+    //       return newTrack;
+    //     });
+    //   }
+    // });
+  };
+  // console.log(selectedTrack, "<< selected track");
+
   return (
     <>
       <div className="playlist-container">
