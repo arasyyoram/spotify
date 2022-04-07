@@ -1,43 +1,22 @@
 import { useEffect, useState } from "react";
 import TrackComponent from "../track";
 import PlaylistComponent from "../playlist";
-import { useSelector, useDispatch } from "react-redux";
-import { getAccessToken } from "./actions";
+import { useSelector } from "react-redux";
 
 export default function SearchComponent() {
   // state = { accessToken: "", query: "", tracks: [] };
-  const [accessToken, setAccessToken] = useState("");
+
   const [query, setQuery] = useState("");
   const [tracks, setTracks] = useState([]);
   const [selectedTrack, setSelectedTrack] = useState([]);
 
-  const dispatch = useDispatch();
   const currentAccessToken = useSelector((state) => state.accessToken);
-
-  const getQueryParams = () => {
-    const hash = window.location.hash.substring(1);
-    const params = {};
-    hash.split("&").forEach((hk) => {
-      let temp = hk.split("=");
-      params[temp[0]] = temp[1];
-    });
-    // console.log(params.access_token);
-    setAccessToken(params.access_token);
-    dispatch(getAccessToken(params.access_token));
-    return params.access_token;
-  };
-
+  // console.log(currentAccessToken, "<< token searchcomponenet");
   // componentDidMount() {
   //   if (window.location.hash) {
   //     this.getQueryParams();
   //   }
   // }
-
-  useEffect(() => {
-    if (window.location.hash) {
-      getQueryParams();
-    }
-  }, []);
 
   // const rollTracks = (event) => {
   //   event.preventDefault();
@@ -170,7 +149,7 @@ export default function SearchComponent() {
       /> */}
       </div>
       <PlaylistComponent
-        accessToken={accessToken}
+        accessToken={currentAccessToken}
         selectedTrack={selectedTrack}
       />
       <div className="card-container">
