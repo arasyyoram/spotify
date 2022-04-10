@@ -1,33 +1,15 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import TrackComponent from "../track";
 import PlaylistComponent from "../playlist";
 import { useSelector } from "react-redux";
 
 export default function SearchComponent() {
-  // state = { accessToken: "", query: "", tracks: [] };
-
   const [query, setQuery] = useState("");
   const [tracks, setTracks] = useState([]);
   const [selectedTrack, setSelectedTrack] = useState([]);
 
   const currentAccessToken = useSelector((state) => state.accessToken);
   // console.log(currentAccessToken, "<< token searchcomponenet");
-  // componentDidMount() {
-  //   if (window.location.hash) {
-  //     this.getQueryParams();
-  //   }
-  // }
-
-  // const rollTracks = (event) => {
-  //   event.preventDefault();
-  //   setTracks((oldTrack) => {
-  //     if (oldTrack.length !== 0) {
-  //       oldTrack.map((track) => {
-  //         return track.isHeld ? track : getTracks();
-  //       });
-  //     }
-  //   });
-  // };
 
   const getTracks = async (event) => {
     event.preventDefault();
@@ -54,14 +36,7 @@ export default function SearchComponent() {
     if (tracks.length === 0) {
       setTracks(tempTrack);
     }
-    // else {
-    //   setTracks((oldTrack) =>
-    //     oldTrack.map((track) => {
-    //       return track.isHeld ? track : tempTrack;
-    //     })
-    //   );
-    // }
-    // console.log(tracks);
+
     if (tracks.length !== 0) {
       // return setTracks(tempTrack);
       setTracks((oldTrack) => {
@@ -78,24 +53,15 @@ export default function SearchComponent() {
 
     // setTracks(tracks.albums.items);
     // console.log(tempTrack[0].isHeld);
-    console.log(selectedTrack); //deleted this
+    console.log(selectedTrack); // deleted this
   };
 
   const queryInput = (event) => {
     setQuery(event.target.value);
   };
 
-  // const { tracks } = this.state;
-
   const getSelect = (id) => {
     console.log(id);
-    // setTracks((oldTrack) =>
-    //   oldTrack.map((track) => {
-    //     if (track.uri === id)
-    //       selectedTrackTemp.push({ ...track, isHeld: !track.isHeld });
-    //     return track.uri === id ? { ...track, isHeld: !track.isHeld } : track;
-    //   })
-    // ); yg work
 
     setTracks((oldTrack) => {
       const selectedTrackTemp = oldTrack.map((track) => {
@@ -111,16 +77,6 @@ export default function SearchComponent() {
       }
       return [...oldselectedTrack, id];
     });
-
-    // tracks.forEach((track) => {
-    //   if (track.uri === id) {
-    //     // masih duplicate ketika setstate di dlm setstate
-    //     setSelectedTrack((oldselectedTrack) => {
-    //       const newTrack = [...oldselectedTrack, track.uri];
-    //       return newTrack;
-    //     });
-    //   }
-    // });
   };
   // console.log(selectedTrack, "<< selected track");
 
@@ -142,11 +98,6 @@ export default function SearchComponent() {
             Search
           </button>
         </form>
-        {/* <img
-        src="https://media.giphy.com/media/Vh8pbGX3SGRwFDh3V0/source.gif"
-        alt="images"
-        className="img"
-      /> */}
       </div>
       <PlaylistComponent
         accessToken={currentAccessToken}

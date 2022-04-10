@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export default function PlaylistComponent({ accessToken, selectedTrack }) {
   const [form, setForm] = useState({ title: "", description: "" });
@@ -10,13 +10,6 @@ export default function PlaylistComponent({ accessToken, selectedTrack }) {
     const { name, value } = event.target;
     setForm({ ...form, [name]: value });
   };
-
-  // useEffect(() => {
-  //   if (userID !== "") {
-  //     createPlaylist();
-  //     // addPlaylist();
-  //   }
-  // }, [userID]);
 
   const formSubmit = (event) => {
     event.preventDefault();
@@ -69,7 +62,6 @@ export default function PlaylistComponent({ accessToken, selectedTrack }) {
 
   const addPlaylist = async (playlistIDlocal) => {
     console.log(selectedTrack);
-    // let tempdataplaylist = selectedTrack.join;
     let dataitemPlaylist = {
       uris: selectedTrack,
       position: 0,
