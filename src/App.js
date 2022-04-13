@@ -7,6 +7,9 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getAccessToken } from "./components/search/actions";
 
+import { Helmet } from "react-helmet";
+import Button from "@mui/material/Button";
+
 const SPOTIFY_CLIENT = process.env.REACT_APP_SPOTIFY_CLIENT;
 // console.log(SPOTIFY_CLIENT);
 
@@ -47,6 +50,12 @@ function App() {
 
   return (
     <section>
+      <Helmet>
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+        />
+      </Helmet>
       <Switch>
         <Route path="/create-playlist">
           {currentAccessToken ? (
@@ -63,9 +72,30 @@ function App() {
           {currentAccessToken ? (
             <Redirect to="/create-playlist" />
           ) : (
-            <a href={`${url}`} className="login">
-              Login
-            </a>
+            <>
+              {/* <a href={`${url}`} className="login">
+                Login
+              </a> */}
+              <Button
+                href={`${url}`}
+                variant="outlined"
+                size="large"
+                sx={{
+                  color: "#000000",
+                  borderColor: "#000000",
+                  position: "absolute",
+                  right: 30,
+                  top: 20,
+                  "&:hover": {
+                    borderColor: "#000000",
+                    backgroundColor: "#000000",
+                    color: "#ffffff",
+                  },
+                }}
+              >
+                Login
+              </Button>
+            </>
           )}
         </Route>
       </Switch>

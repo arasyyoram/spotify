@@ -2,6 +2,7 @@ import { useState } from "react";
 import TrackComponent from "../track";
 import PlaylistComponent from "../playlist";
 import { useSelector } from "react-redux";
+import { Helmet } from "react-helmet";
 
 export default function SearchComponent() {
   const [query, setQuery] = useState("");
@@ -82,6 +83,9 @@ export default function SearchComponent() {
 
   return (
     <>
+      <Helmet>
+        <title>Create Playlist</title>
+      </Helmet>
       <div className="playlist-container">
         <form id="playlist-form" className="form-container">
           <div className="search-container">
