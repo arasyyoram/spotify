@@ -1,18 +1,29 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import TrackComponent from "../track";
 import PlaylistComponent from "../playlist";
-import { useSelector } from "react-redux";
+import { useSelector, RootStateOrAny } from "react-redux";
 import { Helmet } from "react-helmet";
+
+interface Track {
+  id: string;
+  name: string;
+  artists: { name: string }[];
+  album: { images: { url: string }[] };
+  isHeld: boolean;
+  uri: string;
+}
 
 export default function SearchComponent() {
   const [query, setQuery] = useState("");
-  const [tracks, setTracks] = useState([]);
-  const [selectedTrack, setSelectedTrack] = useState([]);
+  const [tracks, setTracks] = useState<Track[]>([]);
+  const [selectedTrack, setSelectedTrack] = useState<string[]>([]);
 
-  const currentAccessToken = useSelector((state) => state.accessToken);
+  const currentAccessToken = useSelector(
+    (state: RootStateOrAny) => state.accessToken
+  );
   // console.log(currentAccessToken, "<< token searchcomponenet");
 
-  const getTracks = async (event) => {
+  const getTracks = async (event: React.FormEvent) => {
     event.preventDefault();
     console.log("fetching...");
 
@@ -27,9 +38,9 @@ export default function SearchComponent() {
         },
       }
     ).then((response) => response.json());
-    const tempTrack = [];
+    const tempTrack: any = [];
     console.log(trackslist);
-    trackslist.tracks.items.forEach((e) => {
+    trackslist.tracks.items.forEach((e: any) => {
       const tempObj = { ...e, isHeld: false };
       tempTrack.push(tempObj);
     });
@@ -57,11 +68,11 @@ export default function SearchComponent() {
     console.log(selectedTrack); // deleted this
   };
 
-  const queryInput = (event) => {
+  const queryInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value);
   };
 
-  const getSelect = (id) => {
+  const getSelect = (id: string) => {
     console.log(id);
 
     setTracks((oldTrack) => {

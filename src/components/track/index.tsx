@@ -1,10 +1,20 @@
-export default function TrackComponent({
+import React from "react";
+
+interface Props {
+  songName: string;
+  artists: { name: string }[];
+  album: { images: { url: string }[] };
+  isHeld: boolean;
+  getSelect: () => void;
+}
+
+const TrackComponent: React.FC<Props> = ({
   songName,
   artists,
   album,
   isHeld,
   getSelect,
-}) {
+}) => {
   const style = {
     backgroundColor: isHeld ? "#000" : "#fff",
     color: isHeld ? "#fff" : "#000",
@@ -22,4 +32,6 @@ export default function TrackComponent({
       </button>
     </div>
   );
-}
+};
+
+export default TrackComponent;
