@@ -25,7 +25,7 @@ export default function SearchComponent() {
 
   const getTracks = async (event: React.FormEvent) => {
     event.preventDefault();
-    console.log("fetching...");
+    // console.log("fetching...");
 
     const trackslist = await fetch(
       `https://api.spotify.com/v1/search?q=${query}&type=artist%2Calbum%2Ctrack&market=ID&limit=8`,
@@ -39,7 +39,7 @@ export default function SearchComponent() {
       }
     ).then((response) => response.json());
     const tempTrack: any = [];
-    console.log(trackslist);
+    // console.log(trackslist);
     trackslist.tracks.items.forEach((e: any) => {
       const tempObj = { ...e, isHeld: false };
       tempTrack.push(tempObj);
@@ -65,7 +65,7 @@ export default function SearchComponent() {
 
     // setTracks(tracks.albums.items);
     // console.log(tempTrack[0].isHeld);
-    console.log(selectedTrack); // deleted this
+    // console.log(selectedTrack); // deleted this
   };
 
   const queryInput = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -73,7 +73,7 @@ export default function SearchComponent() {
   };
 
   const getSelect = (id: string) => {
-    console.log(id);
+    // console.log(id);
 
     setTracks((oldTrack) => {
       const selectedTrackTemp = oldTrack.map((track) => {

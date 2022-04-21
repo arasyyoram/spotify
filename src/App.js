@@ -29,7 +29,7 @@ function App() {
 
   const dispatch = useDispatch();
   const currentAccessToken = useSelector((state) => state.accessToken);
-  console.log(currentAccessToken, "<< token");
+  // console.log(currentAccessToken, "<< token");
 
   const getQueryParams = () => {
     const hash = window.location.hash.substring(1);

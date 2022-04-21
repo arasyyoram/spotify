@@ -13,7 +13,7 @@ export default function PlaylistComponent({ accessToken, selectedTrack }) {
 
   const formSubmit = (event) => {
     event.preventDefault();
-    console.log("send data...");
+    // console.log("send data...");
     const getUserProfile = async () => {
       let userIDlocal = "";
       await fetch(`https://api.spotify.com/v1/me`, {
@@ -42,7 +42,7 @@ export default function PlaylistComponent({ accessToken, selectedTrack }) {
       collaborative: false,
     };
     let playlistIDlocal = "";
-    console.log(userIDlocal, "<<<< userID");
+    // console.log(userIDlocal, "<<<< userID");
     await fetch(`https://api.spotify.com/v1/users/${userIDlocal}/playlists`, {
       method: "POST",
       headers: {
@@ -61,13 +61,13 @@ export default function PlaylistComponent({ accessToken, selectedTrack }) {
   };
 
   const addPlaylist = async (playlistIDlocal) => {
-    console.log(selectedTrack);
+    // console.log(selectedTrack);
     let dataitemPlaylist = {
       uris: selectedTrack,
       position: 0,
     };
-    console.log(playlistIDlocal, "<<<< playlistID");
-    console.log(JSON.stringify(dataitemPlaylist));
+    // console.log(playlistIDlocal, "<<<< playlistID");
+    // console.log(JSON.stringify(dataitemPlaylist));
     await fetch(
       `https://api.spotify.com/v1/playlists/${playlistIDlocal}/tracks`,
       {
@@ -79,9 +79,9 @@ export default function PlaylistComponent({ accessToken, selectedTrack }) {
         },
         body: JSON.stringify(dataitemPlaylist),
       }
-    )
-      .then((response) => response.json())
-      .then((data) => console.log(data));
+    ).then((response) => response.json());
+    // .then((data) => console.log(data));
+    setForm({ title: "", description: "" });
   };
   // console.log(playlistID);
   return (
