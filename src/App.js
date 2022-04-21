@@ -14,12 +14,14 @@ const SPOTIFY_CLIENT = process.env.REACT_APP_SPOTIFY_CLIENT;
 // console.log(SPOTIFY_CLIENT);
 
 const client_id = SPOTIFY_CLIENT;
+const REDIRECT_URI =
+  process.env.REACT_APP_DEV_URL || process.env.REACT_APP_VERCEL_URL;
 
 let url = "https://accounts.spotify.com/authorize";
 url += "?response_type=token";
 url += "&client_id=" + client_id;
 url += "&scope=playlist-modify-private";
-url += "&redirect_uri=http://localhost:3000/";
+url += "&redirect_uri=" + REDIRECT_URI;
 // console.log(url);
 
 function App() {
