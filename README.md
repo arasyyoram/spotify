@@ -22,6 +22,9 @@ To run it locally, you can run:
 ```
 git clone https://github.com/arasyyoram/spotify.git
 ```
+```
+npm install
+```
 
 or you can go to http://spotify-yoram.vercel.app/
 ## Usage
