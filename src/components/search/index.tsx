@@ -3,6 +3,7 @@ import TrackComponent from "../track";
 import PlaylistComponent from "../playlist";
 import { useSelector, RootStateOrAny } from "react-redux";
 import { Helmet } from "react-helmet";
+import UserProfile from "../userProfile";
 
 interface Track {
   id: string;
@@ -10,6 +11,7 @@ interface Track {
   artists: { name: string }[];
   album: { images: { url: string }[] };
   isHeld: boolean;
+  duration_ms: number;
   uri: string;
 }
 
@@ -23,10 +25,12 @@ export default function SearchComponent() {
   );
   // console.log(currentAccessToken, "<< token searchcomponenet");
 
+  // Fetch track from Spotify API
   const getTracks = async (event: React.FormEvent) => {
     event.preventDefault();
     // console.log("fetching...");
 
+    // Store the fetch to variable
     const trackslist = await fetch(
       `https://api.spotify.com/v1/search?q=${query}&type=artist%2Calbum%2Ctrack&market=ID&limit=8`,
       {
@@ -38,43 +42,40 @@ export default function SearchComponent() {
         },
       }
     ).then((response) => response.json());
+
+    // Modify JSON response to add isHeld property
     const tempTrack: any = [];
-    // console.log(trackslist);
     trackslist.tracks.items.forEach((e: any) => {
       const tempObj = { ...e, isHeld: false };
       tempTrack.push(tempObj);
     });
-    // console.log(tracks.length);
+
+    // Validate tracks state before setState
     if (tracks.length === 0) {
       setTracks(tempTrack);
     }
 
     if (tracks.length !== 0) {
-      // return setTracks(tempTrack);
       setTracks((oldTrack) => {
         let newTrack = [];
         const tempselectedTrack = oldTrack.filter((track) => {
-          // console.log(track);
           return track.isHeld;
         });
-        // console.log(selectedTrack);
         newTrack = [...tempselectedTrack, ...tempTrack];
         return newTrack;
       });
     }
-
-    // setTracks(tracks.albums.items);
-    // console.log(tempTrack[0].isHeld);
-    // console.log(selectedTrack); // deleted this
   };
+  // End of getTracks func
 
+  // Handle query input form
   const queryInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value);
   };
 
+  // Handle selected and deselected track and set it to state
   const getSelect = (id: string) => {
-    // console.log(id);
-
+    // Change isHeld prop when track get selected
     setTracks((oldTrack) => {
       const selectedTrackTemp = oldTrack.map((track) => {
         return track.uri === id ? { ...track, isHeld: !track.isHeld } : track;
@@ -82,6 +83,7 @@ export default function SearchComponent() {
       return selectedTrackTemp;
     });
 
+    // Store selected track to state
     setSelectedTrack((oldselectedTrack) => {
       if (oldselectedTrack.indexOf(id) > -1) {
         oldselectedTrack.splice(oldselectedTrack.indexOf(id), 1);
@@ -90,14 +92,17 @@ export default function SearchComponent() {
       return [...oldselectedTrack, id];
     });
   };
-  // console.log(selectedTrack, "<< selected track");
 
   return (
     <>
       <Helmet>
         <title>Create Playlist</title>
       </Helmet>
+
+      <UserProfile accessToken={currentAccessToken} />
+
       <div className="playlist-container">
+        <h1 className="playlist-title">Search Playlist</h1>
         <form id="playlist-form" className="form-container">
           <div className="search-container">
             <input
@@ -128,6 +133,7 @@ export default function SearchComponent() {
                 artists={e.artists}
                 album={e.album}
                 isHeld={e.isHeld}
+                duration={e.duration_ms}
                 getSelect={() => getSelect(e.uri)}
               />
             );

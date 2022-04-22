@@ -1,23 +1,25 @@
-const SearchComponent = () => (
-  <div className="playlist-container">
-    <form id="playlist-form" className="form-container">
-      <div className="search-container">
-        <input
-          type="search"
-          id="search"
-          className="search-bar"
-          placeholder="Search your favorite song"
-        />
-      </div>
+import { Helmet } from "react-helmet";
+import styles from "./index.module.css";
+import Navbar from "./Navbar";
 
-      <button id="playlist-btn">Search</button>
-    </form>
-    {/* <img
-      src="https://media.giphy.com/media/Vh8pbGX3SGRwFDh3V0/source.gif"
-      alt="images"
-      className="img"
-    /> */}
-  </div>
+const Home = () => (
+  <>
+    <Helmet>
+      <title>Spotify</title>
+    </Helmet>
+    <Navbar />
+    <div className={styles.homewrap}>
+      <div>
+        <h1 className={styles.title}>Welcome to Spotify</h1>
+        <h2 className={styles.desc}>
+          create your spotify playlist with just a few clicks
+        </h2>
+      </div>
+    </div>
+    <footer className={styles.footer}>
+      <p className={styles.footer_text}>Copyright © 2022 • Made by @yoram</p>
+    </footer>
+  </>
 );
 
-export default SearchComponent;
+export default Home;

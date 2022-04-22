@@ -2,18 +2,23 @@ import { useState } from "react";
 
 export default function PlaylistComponent({ accessToken, selectedTrack }) {
   const [form, setForm] = useState({ title: "", description: "" });
-  const [userID, setUserID] = useState("");
-  const [playlistID, setPlaylistID] = useState("");
+  // const [userID, setUserID] = useState("");
+  // const [playlistID, setPlaylistID] = useState("");
+  const [successMessage, setSuccessMessage] = useState(false);
 
+  // Handle input query and store it to state
   const formHandler = (event) => {
     event.preventDefault();
     const { name, value } = event.target;
     setForm({ ...form, [name]: value });
   };
 
+  // Handle form submit and run several func to POST data to create playlist
   const formSubmit = (event) => {
     event.preventDefault();
     // console.log("send data...");
+
+    // Get the userID
     const getUserProfile = async () => {
       let userIDlocal = "";
       await fetch(`https://api.spotify.com/v1/me`, {
@@ -26,7 +31,7 @@ export default function PlaylistComponent({ accessToken, selectedTrack }) {
       })
         .then((response) => response.json())
         .then((data) => {
-          setUserID(data.id);
+          // setUserID(data.id);
           userIDlocal = data.id;
         });
       createPlaylist(userIDlocal);
@@ -34,6 +39,7 @@ export default function PlaylistComponent({ accessToken, selectedTrack }) {
     getUserProfile();
   };
 
+  // Get playlist ID
   const createPlaylist = async (userIDlocal) => {
     let dataPlaylist = {
       name: form.title,
@@ -42,7 +48,7 @@ export default function PlaylistComponent({ accessToken, selectedTrack }) {
       collaborative: false,
     };
     let playlistIDlocal = "";
-    // console.log(userIDlocal, "<<<< userID");
+
     await fetch(`https://api.spotify.com/v1/users/${userIDlocal}/playlists`, {
       method: "POST",
       headers: {
@@ -54,20 +60,19 @@ export default function PlaylistComponent({ accessToken, selectedTrack }) {
     })
       .then((response) => response.json())
       .then((data) => {
-        setPlaylistID(data.id);
+        // setPlaylistID(data.id);
         playlistIDlocal = data.id;
       });
     addPlaylist(playlistIDlocal);
   };
 
+  // POST selected track into Spotify playlist
   const addPlaylist = async (playlistIDlocal) => {
-    // console.log(selectedTrack);
     let dataitemPlaylist = {
       uris: selectedTrack,
       position: 0,
     };
-    // console.log(playlistIDlocal, "<<<< playlistID");
-    // console.log(JSON.stringify(dataitemPlaylist));
+
     await fetch(
       `https://api.spotify.com/v1/playlists/${playlistIDlocal}/tracks`,
       {
@@ -79,15 +84,29 @@ export default function PlaylistComponent({ accessToken, selectedTrack }) {
         },
         body: JSON.stringify(dataitemPlaylist),
       }
-    ).then((response) => response.json());
-    // .then((data) => console.log(data));
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setSuccessMessage(true);
+        setTimeout(() => {
+          setSuccessMessage(false);
+        }, 3000);
+        // console.log(data);
+      });
+
+    // Reset form input after click submit button
     setForm({ title: "", description: "" });
   };
-  // console.log(playlistID);
+
   return (
     <>
-      <h1 className="playlist-title">Create Playlist</h1>
       <div className="playlist-container">
+        <h1 className="playlist-title">Create Playlist</h1>
+
+        {successMessage && (
+          <h4 className="playlist-title">Playlist has been added...</h4>
+        )}
+
         <form
           id="playlist-form"
           className="form-container"

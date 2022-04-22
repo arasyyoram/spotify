@@ -1,3 +1,5 @@
+// Mock response for MSW
+
 const playlistResponse = {
   track: {
     href: "https://api.spotify.com/v1/search?query=one+ok+rock&type=track&market=ID&locale=en-US%2Cen%3Bq%3D0.9&offset=0&limit=8",

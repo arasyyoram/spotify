@@ -1,0 +1,29 @@
+.nav_ol {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+  margin-top: 10px;
+  list-style: none;
+}
+
+.nav_li {
+  padding: 10px 10px;
+}
+
+.nav_link {
+  text-decoration: none;
+  color: #000000;
+}
+
+.nav_logo {
+  font-weight: 700;
+  font-size: 25px;
+  margin-right: 10px;
+}
+
+@media (max-width: 450px) {
+  .nav_ol {
+    align-items: start;
+    flex-direction: column;
+  }
+}

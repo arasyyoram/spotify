@@ -23,11 +23,12 @@ test("track component", () => {
       artists={artists}
       album={album}
       isHeld={false}
+      duration={102374}
     />
   );
 
   const songName = screen.getByText("Blank Space");
-  const artistsRender = screen.getByText("Taylor Swift");
+  const artistsRender = screen.getByText("Taylor Swift • 1:42");
   const albumRender = screen.getByAltText("Blank Space");
   const isHeld = screen.getByText("Select");
 
